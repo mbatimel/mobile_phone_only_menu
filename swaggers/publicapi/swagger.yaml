@@ -1,0 +1,323 @@
+openapi: 3.0.0
+servers:
+    - {}
+paths:
+    /menu/api/all:
+        get:
+            tags:
+                - PublicApi
+            description: получить полный список позиций меню
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "500":
+                    description: Internal Server Error
+        delete:
+            tags:
+                - PublicApi
+            summary: опустошить меню
+            description: опустошить меню
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "409":
+                    description: Conflict
+                "500":
+                    description: Internal Server Error
+    /menu/api/create/chef:
+        post:
+            tags:
+                - PublicApi
+            summary: добавить шефа
+            description: добавить шефа
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/requestPublicApiCreateChef'
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "500":
+                    description: Internal Server Error
+    /menu/api/create/dish:
+        post:
+            tags:
+                - PublicApi
+            summary: Создание позиции в меню
+            description: создание позиции в меню
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/requestPublicApiCreateDish'
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "500":
+                    description: Internal Server Error
+    /menu/api/delete:
+        delete:
+            tags:
+                - PublicApi
+            summary: удалить позицию в меню
+            description: удалить позицию в меню
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/requestPublicApiDeleteDish'
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "500":
+                    description: Internal Server Error
+    /menu/api/favorite:
+        get:
+            tags:
+                - PublicApi
+            summary: Получить сприсок желаймого
+            description: Получить сприсок желаймого
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "500":
+                    description: Internal Server Error
+    /menu/api/mark:
+        post:
+            tags:
+                - PublicApi
+            summary: 'пометить позицию как нравится '
+            description: 'пометить позицию как нравится '
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/requestPublicApiMarkFavoriteDish'
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "500":
+                    description: Internal Server Error
+    /menu/api/update:
+        post:
+            tags:
+                - PublicApi
+            summary: обновить поззицию в меню
+            description: обновить поззицию в меню
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/requestPublicApiUpdateDish'
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "500":
+                    description: Internal Server Error
+components:
+    schemas:
+        consts.MenuDish:
+            type: object
+            properties:
+                category:
+                    type: string
+                    example: Закуски
+                    description: категория блюда
+                choice:
+                    type: boolean
+                    example: "true"
+                    description: было ли выбрано блюдо
+                id:
+                    type: number
+                    format: int64
+                    example: 10
+                    description: айди блюда
+                name:
+                    type: string
+                    example: '"бердра'
+                    description: название блюда
+        requestPublicApiCreateChef:
+            type: object
+            required:
+                - name
+            properties:
+                name:
+                    type: string
+            description: добавить шефа
+        requestPublicApiCreateDish:
+            type: object
+            required:
+                - dish
+                - categoty
+            properties:
+                categoty:
+                    type: string
+                dish:
+                    type: string
+            description: создание позиции в меню
+        requestPublicApiDeleteAllMenu:
+            type: object
+        requestPublicApiDeleteDish:
+            type: object
+            required:
+                - id
+            properties:
+                id:
+                    type: number
+                    format: uint64
+            description: удалить позицию в меню
+        requestPublicApiGetAllDish:
+            type: object
+        requestPublicApiGetFavoriteDish:
+            type: object
+        requestPublicApiMarkFavoriteDish:
+            type: object
+            required:
+                - ids
+            properties:
+                ids:
+                    type: array
+                    items:
+                        type: number
+                        format: uint64
+                    nullable: true
+            description: 'пометить позицию как нравится '
+        requestPublicApiUpdateDish:
+            type: object
+            required:
+                - id
+                - text
+            properties:
+                id:
+                    type: number
+                    format: uint64
+                text:
+                    type: string
+            description: обновить поззицию в меню
+        responsePublicApiCreateChef:
+            type: object
+        responsePublicApiCreateDish:
+            type: object
+        responsePublicApiDeleteAllMenu:
+            type: object
+        responsePublicApiDeleteDish:
+            type: object
+        responsePublicApiGetAllDish:
+            allOf:
+                - {}
+                - type: object
+                  description: получить полный список позиций меню
+        responsePublicApiGetFavoriteDish:
+            allOf:
+                - {}
+                - type: object
+                  description: Получить сприсок желаймого
+        responsePublicApiMarkFavoriteDish:
+            type: object
+        responsePublicApiUpdateDish:
+            type: object
