@@ -50,6 +50,30 @@ paths:
                     description: Conflict
                 "500":
                     description: Internal Server Error
+    /menu/api/chef:
+        delete:
+            tags:
+                - PublicApi
+            summary: удалсть шефа
+            description: удалить шефа
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "500":
+                    description: Internal Server Error
     /menu/api/create/chef:
         post:
             tags:
@@ -190,6 +214,35 @@ paths:
                     description: Method Not Allowed
                 "500":
                     description: Internal Server Error
+    /menu/api/unmark:
+        post:
+            tags:
+                - PublicApi
+            summary: 'пометить позицию как не нравится '
+            description: 'пометить позицию как не нравится '
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/requestPublicApiMarkUnFavoriteDish'
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "500":
+                    description: Internal Server Error
     /menu/api/update:
         post:
             tags:
@@ -262,6 +315,8 @@ components:
             description: создание позиции в меню
         requestPublicApiDeleteAllMenu:
             type: object
+        requestPublicApiDeleteChef:
+            type: object
         requestPublicApiDeleteDish:
             type: object
             required:
@@ -287,6 +342,18 @@ components:
                         format: uint64
                     nullable: true
             description: 'пометить позицию как нравится '
+        requestPublicApiMarkUnFavoriteDish:
+            type: object
+            required:
+                - ids
+            properties:
+                ids:
+                    type: array
+                    items:
+                        type: number
+                        format: uint64
+                    nullable: true
+            description: 'пометить позицию как не нравится '
         requestPublicApiUpdateDish:
             type: object
             required:
@@ -305,6 +372,8 @@ components:
             type: object
         responsePublicApiDeleteAllMenu:
             type: object
+        responsePublicApiDeleteChef:
+            type: object
         responsePublicApiDeleteDish:
             type: object
         responsePublicApiGetAllDish:
@@ -318,6 +387,8 @@ components:
                 - type: object
                   description: Получить сприсок желаймого
         responsePublicApiMarkFavoriteDish:
+            type: object
+        responsePublicApiMarkUnFavoriteDish:
             type: object
         responsePublicApiUpdateDish:
             type: object

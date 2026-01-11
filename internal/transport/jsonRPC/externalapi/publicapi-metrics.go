@@ -66,6 +66,29 @@ func (m metricsPublicApi) MarkFavoriteDish(ctx context.Context, secretId uuid.UU
 	return m.next.MarkFavoriteDish(ctx, secretId, ids)
 }
 
+func (m metricsPublicApi) MarkUnFavoriteDish(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error) {
+
+	defer func(_begin time.Time) {
+		var (
+			success = true
+			errCode int
+		)
+		if err != nil {
+			success = false
+			errCode = v2.StatusInternalServerError
+			ec, ok := err.(withErrorCode)
+			if ok {
+				errCode = ec.Code()
+			}
+		}
+		RequestCount.WithLabelValues("publicApi", "markUnFavoriteDish", strconv.FormatBool(success), strconv.Itoa(errCode)).Add(1)
+		RequestCountAll.WithLabelValues("publicApi", "markUnFavoriteDish", strconv.FormatBool(success), strconv.Itoa(errCode)).Add(1)
+		RequestLatency.WithLabelValues("publicApi", "markUnFavoriteDish", strconv.FormatBool(success), strconv.Itoa(errCode)).Observe(time.Since(_begin).Seconds())
+	}(time.Now())
+
+	return m.next.MarkUnFavoriteDish(ctx, secretId, ids)
+}
+
 func (m metricsPublicApi) DeleteDish(ctx context.Context, secretId uuid.UUID, id uint64) (err error) {
 
 	defer func(_begin time.Time) {
@@ -110,6 +133,29 @@ func (m metricsPublicApi) CreateChef(ctx context.Context, secretId uuid.UUID, na
 	}(time.Now())
 
 	return m.next.CreateChef(ctx, secretId, name)
+}
+
+func (m metricsPublicApi) DeleteChef(ctx context.Context, secretId uuid.UUID) (err error) {
+
+	defer func(_begin time.Time) {
+		var (
+			success = true
+			errCode int
+		)
+		if err != nil {
+			success = false
+			errCode = v2.StatusInternalServerError
+			ec, ok := err.(withErrorCode)
+			if ok {
+				errCode = ec.Code()
+			}
+		}
+		RequestCount.WithLabelValues("publicApi", "deleteChef", strconv.FormatBool(success), strconv.Itoa(errCode)).Add(1)
+		RequestCountAll.WithLabelValues("publicApi", "deleteChef", strconv.FormatBool(success), strconv.Itoa(errCode)).Add(1)
+		RequestLatency.WithLabelValues("publicApi", "deleteChef", strconv.FormatBool(success), strconv.Itoa(errCode)).Observe(time.Since(_begin).Seconds())
+	}(time.Now())
+
+	return m.next.DeleteChef(ctx, secretId)
 }
 
 func (m metricsPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error) {

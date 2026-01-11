@@ -87,6 +87,43 @@ func MarkFavoriteDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUI
 	sendResponse(ctx, log.Logger, nil, nil)
 	return err
 }
+func MarkUnFavoriteDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, ids []uint64) error {
+	var (
+		methodName = "MarkUnFavoriteDish"
+		err        error
+	)
+
+	defer func(begin time.Time) {
+		fields := map[string]interface{}{
+			"method":      "post",
+			"path":        "/menu/api/unmark",
+			"handlerName": methodName,
+			"ids":         ids,
+
+			"service": MenuDishServiceName,
+			"took":    time.Since(begin).String(),
+		}
+		l := log.Info()
+		if err != nil {
+			if errors.Is(err, errors.ForbiddenError()) {
+				l = log.Warn().Err(err)
+			} else {
+				l = log.Error().Err(err)
+			}
+		}
+		l.Fields(fields).Msg("call")
+
+	}(time.Now())
+
+	err = svc.MarkUnFavoriteDish(ctx.UserContext(), secretId, ids)
+	if err != nil {
+		sendResponse(ctx, log.Logger, nil, err)
+		return nil
+	}
+
+	sendResponse(ctx, log.Logger, nil, nil)
+	return err
+}
 
 func DeleteDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, id uint64) error {
 	var (
@@ -154,6 +191,41 @@ func CreateChef(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, nam
 	}(time.Now())
 
 	err = svc.CreateChef(ctx.UserContext(), secretId, name)
+	if err != nil {
+		sendResponse(ctx, log.Logger, nil, err)
+		return nil
+	}
+
+	sendResponse(ctx, log.Logger, nil, nil)
+	return err
+}
+func DeleteChef(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID) error {
+	var (
+		methodName = "DeleteChef"
+		err        error
+	)
+
+	defer func(begin time.Time) {
+		fields := map[string]interface{}{
+			"method":      "delete",
+			"path":        "/menu/api/chef",
+			"handlerName": methodName,
+			"service":     MenuDishServiceName,
+			"took":        time.Since(begin).String(),
+		}
+		l := log.Info()
+		if err != nil {
+			if errors.Is(err, errors.ForbiddenError()) {
+				l = log.Warn().Err(err)
+			} else {
+				l = log.Error().Err(err)
+			}
+		}
+		l.Fields(fields).Msg("call")
+
+	}(time.Now())
+
+	err = svc.DeleteChef(ctx.UserContext(), secretId)
 	if err != nil {
 		sendResponse(ctx, log.Logger, nil, err)
 		return nil

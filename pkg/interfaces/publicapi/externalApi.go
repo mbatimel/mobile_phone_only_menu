@@ -47,6 +47,20 @@ type PublicApi interface {
 	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
 	MarkFavoriteDish(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error)
 
+	// MarkUnFavoriteDish
+	// @tg http-method=POST
+	// @tg http-path=unmark
+	// @tg http-cookies=secretId|x-secret-id
+	// @tg http-response=github.com/mbatimel/mobile_phone_only_menu/internal/transport/http/custom-handlers:MarkUnFavoriteDish
+	// @tg summary=`пометить позицию как не нравится `
+	// @tg desc=`пометить позицию как не нравится `
+	// @tg 200=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Resp200
+	// @tg 500=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err500
+	// @tg 400=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err400
+	// @tg 403=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err403
+	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
+	MarkUnFavoriteDish(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error)
+
 	// DeleteDish
 	// @tg http-method=DELETE
 	// @tg http-path=/delete
@@ -74,6 +88,20 @@ type PublicApi interface {
 	// @tg 403=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err403
 	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
 	CreateChef(ctx context.Context, secretId uuid.UUID, name string) (err error)
+
+	// DeleteChef
+	// @tg http-method=DELETE
+	// @tg http-path=/chef
+	// @tg http-cookies=secretId|x-secret-id
+	// @tg http-response=github.com/mbatimel/mobile_phone_only_menu/internal/transport/http/custom-handlers:DeleteChef
+	// @tg summary=`удалсть шефа`
+	// @tg desc=`удалить шефа`
+	// @tg 200=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Resp200
+	// @tg 500=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err500
+	// @tg 400=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err400
+	// @tg 403=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err403
+	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
+	DeleteChef(ctx context.Context, secretId uuid.UUID) (err error)
 
 	// UpdateDish
 	// @tg http-method=UPDATE

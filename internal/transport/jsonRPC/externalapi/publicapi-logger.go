@@ -70,6 +70,29 @@ func (m loggerPublicApi) MarkFavoriteDish(ctx context.Context, secretId uuid.UUI
 	return m.next.MarkFavoriteDish(ctx, secretId, ids)
 }
 
+func (m loggerPublicApi) MarkUnFavoriteDish(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error) {
+	logger := log.Ctx(ctx).With().Str("service", "PublicApi").Str("method", "markUnFavoriteDish").Logger()
+	defer func(_begin time.Time) {
+		logHandle := func(ev *zerolog.Event) {
+			fields := map[string]interface{}{
+				"method": "publicApi.markUnFavoriteDish",
+				"request": viewer.Sprintf("%+v", requestPublicApiMarkUnFavoriteDish{
+					Ids:      ids,
+					SecretId: secretId,
+				}),
+				"response": viewer.Sprintf("%+v", responsePublicApiMarkUnFavoriteDish{}),
+			}
+			ev.Fields(fields).Str("took", time.Since(_begin).String())
+		}
+		if err != nil {
+			logger.Error().Err(err).Func(logHandle).Msg("call markUnFavoriteDish")
+			return
+		}
+		logger.Info().Func(logHandle).Msg("call markUnFavoriteDish")
+	}(time.Now())
+	return m.next.MarkUnFavoriteDish(ctx, secretId, ids)
+}
+
 func (m loggerPublicApi) DeleteDish(ctx context.Context, secretId uuid.UUID, id uint64) (err error) {
 	logger := log.Ctx(ctx).With().Str("service", "PublicApi").Str("method", "deleteDish").Logger()
 	defer func(_begin time.Time) {
@@ -114,6 +137,26 @@ func (m loggerPublicApi) CreateChef(ctx context.Context, secretId uuid.UUID, nam
 		logger.Info().Func(logHandle).Msg("call createChef")
 	}(time.Now())
 	return m.next.CreateChef(ctx, secretId, name)
+}
+
+func (m loggerPublicApi) DeleteChef(ctx context.Context, secretId uuid.UUID) (err error) {
+	logger := log.Ctx(ctx).With().Str("service", "PublicApi").Str("method", "deleteChef").Logger()
+	defer func(_begin time.Time) {
+		logHandle := func(ev *zerolog.Event) {
+			fields := map[string]interface{}{
+				"method":   "publicApi.deleteChef",
+				"request":  viewer.Sprintf("%+v", requestPublicApiDeleteChef{SecretId: secretId}),
+				"response": viewer.Sprintf("%+v", responsePublicApiDeleteChef{}),
+			}
+			ev.Fields(fields).Str("took", time.Since(_begin).String())
+		}
+		if err != nil {
+			logger.Error().Err(err).Func(logHandle).Msg("call deleteChef")
+			return
+		}
+		logger.Info().Func(logHandle).Msg("call deleteChef")
+	}(time.Now())
+	return m.next.DeleteChef(ctx, secretId)
 }
 
 func (m loggerPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error) {

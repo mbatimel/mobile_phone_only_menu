@@ -45,8 +45,10 @@ func (http *httpPublicApi) WithErrorHandler(handler ErrorHandler) *httpPublicApi
 func (http *httpPublicApi) SetRoutes(route *fiber.App) {
 	route.Post("/menu/api/create/dish", http.serveCreateDish)
 	route.Post("/menu/api/mark", http.serveMarkFavoriteDish)
+	route.Post("/menu/api/unmark", http.serveMarkUnFavoriteDish)
 	route.Delete("/menu/api/delete", http.serveDeleteDish)
 	route.Post("/menu/api/create/chef", http.serveCreateChef)
+	route.Delete("/menu/api/chef", http.serveDeleteChef)
 	route.Post("/menu/api/update", http.serveUpdateDish)
 	route.Get("/menu/api/all", http.serveGetAllDish)
 	route.Get("/menu/api/favorite", http.serveGetFavoriteDish)

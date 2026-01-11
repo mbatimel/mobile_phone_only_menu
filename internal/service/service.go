@@ -24,6 +24,9 @@ func (m *menuDishService) CreateDish(ctx context.Context, secretId uuid.UUID, di
 func (m *menuDishService) MarkFavoriteDish(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error) {
 	return m.storage.MarkFavoriteDish(ctx, ids)
 }
+func (m *menuDishService) MarkUnFavoriteDish(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error) {
+	return m.storage.MarkUnFavoriteDish(ctx, ids)
+}
 
 func (m *menuDishService) DeleteDish(ctx context.Context, secretId uuid.UUID, id uint64) (err error) {
 	return m.storage.DeleteDish(ctx, id)
@@ -31,6 +34,9 @@ func (m *menuDishService) DeleteDish(ctx context.Context, secretId uuid.UUID, id
 
 func (m *menuDishService) CreateChef(ctx context.Context, secretId uuid.UUID, name string) (err error) {
 	return m.storage.CreateChef(ctx, name)
+}
+func (m *menuDishService) DeleteChef(ctx context.Context, secretId uuid.UUID) (err error) {
+	return m.storage.DeleteChef(ctx)
 }
 
 func (m *menuDishService) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error) {

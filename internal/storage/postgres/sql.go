@@ -18,6 +18,9 @@ var sqlInsertMenu string
 //go:embed sql/update_favorite_dish.sql
 var sqlUpdateFavoriteDish string
 
+//go:embed sql/update_unfavorite_dish.sql
+var sqlUpdateUnFavoriteDish string
+
 //go:embed sql/delete_dish.sql
 var sqlDeleteDish string
 
@@ -35,6 +38,9 @@ var sqlSelectFavoriteDish string
 
 //go:embed sql/delete_all.sql
 var sqlDeleteAll string
+
+//go:embed sql/delete_chef.sql
+var sqlDeleteChef string
 
 func insertDish(ctx context.Context, conn pgx.Tx, dish string, categoty string) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, defaultTimeout)
@@ -60,6 +66,20 @@ func updateFavoriteDish(ctx context.Context, conn pgx.Tx, ids []uint64) (err err
 	defer cancel()
 
 	_, err = conn.Exec(nCtx, sqlUpdateFavoriteDish, ids)
+	if err != nil {
+		return fmt.Errorf("postgresql: %w", err)
+	}
+	err = conn.Commit(ctx)
+	if err != nil {
+		return fmt.Errorf("tx.Commit error: %w", err)
+	}
+	return nil
+}
+func updateUnFavoriteDish(ctx context.Context, conn pgx.Tx, ids []uint64) (err error) {
+	nCtx, cancel := context.WithTimeout(ctx, defaultTimeout)
+	defer cancel()
+
+	_, err = conn.Exec(nCtx, sqlUpdateUnFavoriteDish, ids)
 	if err != nil {
 		return fmt.Errorf("postgresql: %w", err)
 	}
@@ -173,6 +193,19 @@ func deleteAll(ctx context.Context, conn pgx.Tx) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, defaultTimeout)
 	defer cancel()
 	_, err = conn.Exec(ctx, sqlDeleteAll)
+	if err != nil {
+		return fmt.Errorf("postgresql: %w", err)
+	}
+	err = conn.Commit(ctx)
+	if err != nil {
+		return fmt.Errorf("tx.Commit error: %w", err)
+	}
+	return nil
+}
+func deleteChef(ctx context.Context, conn pgx.Tx) (err error) {
+	ctx, cancel := context.WithTimeout(ctx, defaultTimeout)
+	defer cancel()
+	_, err = conn.Exec(ctx, sqlDeleteChef)
 	if err != nil {
 		return fmt.Errorf("postgresql: %w", err)
 	}

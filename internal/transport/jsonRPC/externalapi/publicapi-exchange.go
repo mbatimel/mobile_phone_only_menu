@@ -23,6 +23,14 @@ type requestPublicApiMarkFavoriteDish struct {
 // Formal exchange type, please do not delete.
 type responsePublicApiMarkFavoriteDish struct{}
 
+type requestPublicApiMarkUnFavoriteDish struct {
+	SecretId uuid.UUID `json:"secretId,omitempty"`
+	Ids      []uint64  `json:"ids,omitempty"`
+}
+
+// Formal exchange type, please do not delete.
+type responsePublicApiMarkUnFavoriteDish struct{}
+
 type requestPublicApiDeleteDish struct {
 	SecretId uuid.UUID `json:"secretId,omitempty"`
 	Id       uint64    `json:"id,omitempty"`
@@ -38,6 +46,13 @@ type requestPublicApiCreateChef struct {
 
 // Formal exchange type, please do not delete.
 type responsePublicApiCreateChef struct{}
+
+type requestPublicApiDeleteChef struct {
+	SecretId uuid.UUID `json:"secretId,omitempty"`
+}
+
+// Formal exchange type, please do not delete.
+type responsePublicApiDeleteChef struct{}
 
 type requestPublicApiUpdateDish struct {
 	SecretId uuid.UUID `json:"secretId,omitempty"`

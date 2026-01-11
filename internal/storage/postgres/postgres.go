@@ -15,6 +15,7 @@ type Storage interface {
 	CreateDish(ctx context.Context, dish string, categoty string) (err error)
 
 	MarkFavoriteDish(ctx context.Context, ids []uint64) (err error)
+	MarkUnFavoriteDish(ctx context.Context, ids []uint64) (err error)
 
 	DeleteDish(ctx context.Context, id uint64) (err error)
 
@@ -27,6 +28,7 @@ type Storage interface {
 	GetFavoriteDish(ctx context.Context) (resp []models.MenuDish, err error)
 
 	DeleteAllMenu(ctx context.Context) (err error)
+	DeleteChef(ctx context.Context) (err error)
 }
 type storage struct {
 	connectManager ConnectManager
@@ -67,6 +69,18 @@ func (s *storage) MarkFavoriteDish(ctx context.Context, ids []uint64) (err error
 		_ = tx.Rollback(ctx)
 	}()
 	return updateFavoriteDish(ctx, tx, ids)
+}
+func (s *storage) MarkUnFavoriteDish(ctx context.Context, ids []uint64) (err error) {
+	masterConn := s.connectManager.GetConnection(MASTER)
+
+	tx, err := masterConn.Begin(ctx)
+	if err != nil {
+		return fmt.Errorf("tx.Begin error: %w", err)
+	}
+	defer func() {
+		_ = tx.Rollback(ctx)
+	}()
+	return updateUnFavoriteDish(ctx, tx, ids)
 }
 
 func (s *storage) DeleteDish(ctx context.Context, id uint64) (err error) {
@@ -145,4 +159,16 @@ func (s *storage) DeleteAllMenu(ctx context.Context) (err error) {
 		_ = tx.Rollback(ctx)
 	}()
 	return deleteAll(ctx, tx)
+}
+func (s *storage) DeleteChef(ctx context.Context) (err error) {
+	masterConn := s.connectManager.GetConnection(MASTER)
+
+	tx, err := masterConn.Begin(ctx)
+	if err != nil {
+		return fmt.Errorf("tx.Begin error: %w", err)
+	}
+	defer func() {
+		_ = tx.Rollback(ctx)
+	}()
+	return deleteChef(ctx, tx)
 }

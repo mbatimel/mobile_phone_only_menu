@@ -63,6 +63,33 @@ func (http *httpPublicApi) serveMarkFavoriteDish(ctx *fiber.Ctx) (err error) {
 
 	return customhandlers.MarkFavoriteDish(ctx, http.svc, request.SecretId, request.Ids)
 }
+func (http *httpPublicApi) markUnFavoriteDish(ctx context.Context, request requestPublicApiMarkUnFavoriteDish) (response responsePublicApiMarkUnFavoriteDish, err error) {
+
+	err = http.svc.MarkUnFavoriteDish(ctx, request.SecretId, request.Ids)
+	if err != nil {
+		if http.errorHandler != nil {
+			err = http.errorHandler(err)
+		}
+	}
+	return
+}
+func (http *httpPublicApi) serveMarkUnFavoriteDish(ctx *fiber.Ctx) (err error) {
+
+	var request requestPublicApiMarkUnFavoriteDish
+	if err = ctx.BodyParser(&request); err != nil {
+		ctx.Response().SetStatusCode(fiber.StatusBadRequest)
+		_, err = ctx.WriteString("request body could not be decoded: " + err.Error())
+		return
+	}
+
+	if _secretId := ctx.Cookies("x-secret-id"); _secretId != "" {
+		var secretId uuid.UUID
+		secretId, _ = uuid.Parse(_secretId)
+		request.SecretId = secretId
+	}
+
+	return customhandlers.MarkUnFavoriteDish(ctx, http.svc, request.SecretId, request.Ids)
+}
 func (http *httpPublicApi) deleteDish(ctx context.Context, request requestPublicApiDeleteDish) (response responsePublicApiDeleteDish, err error) {
 
 	err = http.svc.DeleteDish(ctx, request.SecretId, request.Id)
@@ -116,6 +143,28 @@ func (http *httpPublicApi) serveCreateChef(ctx *fiber.Ctx) (err error) {
 	}
 
 	return customhandlers.CreateChef(ctx, http.svc, request.SecretId, request.Name)
+}
+func (http *httpPublicApi) deleteChef(ctx context.Context, request requestPublicApiDeleteChef) (response responsePublicApiDeleteChef, err error) {
+
+	err = http.svc.DeleteChef(ctx, request.SecretId)
+	if err != nil {
+		if http.errorHandler != nil {
+			err = http.errorHandler(err)
+		}
+	}
+	return
+}
+func (http *httpPublicApi) serveDeleteChef(ctx *fiber.Ctx) (err error) {
+
+	var request requestPublicApiDeleteChef
+
+	if _secretId := ctx.Cookies("x-secret-id"); _secretId != "" {
+		var secretId uuid.UUID
+		secretId, _ = uuid.Parse(_secretId)
+		request.SecretId = secretId
+	}
+
+	return customhandlers.DeleteChef(ctx, http.svc, request.SecretId)
 }
 func (http *httpPublicApi) updateDish(ctx context.Context, request requestPublicApiUpdateDish) (response responsePublicApiUpdateDish, err error) {
 
