@@ -104,7 +104,7 @@ type PublicApi interface {
 	DeleteChef(ctx context.Context, secretId uuid.UUID) (err error)
 
 	// UpdateDish
-	// @tg http-method=UPDATE
+	// @tg http-method=PUT
 	// @tg http-path=/update
 	// @tg http-cookies=secretId|x-secret-id
 	// @tg http-response=github.com/mbatimel/mobile_phone_only_menu/internal/transport/http/custom-handlers:UpdateDish
