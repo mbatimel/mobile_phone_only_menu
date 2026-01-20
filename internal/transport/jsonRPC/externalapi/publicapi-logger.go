@@ -159,6 +159,26 @@ func (m loggerPublicApi) DeleteChef(ctx context.Context, secretId uuid.UUID) (er
 	return m.next.DeleteChef(ctx, secretId)
 }
 
+func (m loggerPublicApi) GetChef(ctx context.Context, secretId uuid.UUID) (name string, err error) {
+	logger := log.Ctx(ctx).With().Str("service", "PublicApi").Str("method", "getChef").Logger()
+	defer func(_begin time.Time) {
+		logHandle := func(ev *zerolog.Event) {
+			fields := map[string]interface{}{
+				"method":   "publicApi.getChef",
+				"request":  viewer.Sprintf("%+v", requestPublicApiGetChef{SecretId: secretId}),
+				"response": viewer.Sprintf("%+v", responsePublicApiGetChef{Name: name}),
+			}
+			ev.Fields(fields).Str("took", time.Since(_begin).String())
+		}
+		if err != nil {
+			logger.Error().Err(err).Func(logHandle).Msg("call getChef")
+			return
+		}
+		logger.Info().Func(logHandle).Msg("call getChef")
+	}(time.Now())
+	return m.next.GetChef(ctx, secretId)
+}
+
 func (m loggerPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error) {
 	logger := log.Ctx(ctx).With().Str("service", "PublicApi").Str("method", "updateDish").Logger()
 	defer func(_begin time.Time) {

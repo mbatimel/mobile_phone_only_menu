@@ -2,7 +2,7 @@
 // @tg version=0.0.1
 // @tg backend=retention
 // @tg title=`Retention`
-// @tg servers=localhost:9000|localhost:9001
+// @tg servers=http://45.129.128.131:80|http://45.129.128.131:80
 //
 //go:generate tg transport --services . --out ../../../internal/transport/jsonRPC/externalapi --outSwagger ../../../swaggers/publicapi/swagger.yaml
 
@@ -102,6 +102,19 @@ type PublicApi interface {
 	// @tg 403=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err403
 	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
 	DeleteChef(ctx context.Context, secretId uuid.UUID) (err error)
+	// GetChef
+	// @tg http-method=GET
+	// @tg http-path=/chef
+	// @tg http-cookies=secretId|x-secret-id
+	// @tg http-response=github.com/mbatimel/mobile_phone_only_menu/internal/transport/http/custom-handlers:GetChef
+	// @tg summary=`удалсть шефа`
+	// @tg desc=`удалить шефа`
+	// @tg 200=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Resp200
+	// @tg 500=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err500
+	// @tg 400=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err400
+	// @tg 403=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err403
+	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
+	GetChef(ctx context.Context, secretId uuid.UUID) (name string,err error)
 
 	// UpdateDish
 	// @tg http-method=PUT

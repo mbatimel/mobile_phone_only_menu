@@ -54,6 +54,14 @@ type requestPublicApiDeleteChef struct {
 // Formal exchange type, please do not delete.
 type responsePublicApiDeleteChef struct{}
 
+type requestPublicApiGetChef struct {
+	SecretId uuid.UUID `json:"secretId,omitempty"`
+}
+
+type responsePublicApiGetChef struct {
+	Name string `json:"name,omitempty"`
+}
+
 type requestPublicApiUpdateDish struct {
 	SecretId uuid.UUID `json:"secretId,omitempty"`
 	Id       uint64    `json:"id,omitempty"`

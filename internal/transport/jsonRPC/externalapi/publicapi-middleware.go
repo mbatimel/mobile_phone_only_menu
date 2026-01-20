@@ -15,6 +15,7 @@ type PublicApiMarkUnFavoriteDish func(ctx context.Context, secretId uuid.UUID, i
 type PublicApiDeleteDish func(ctx context.Context, secretId uuid.UUID, id uint64) (err error)
 type PublicApiCreateChef func(ctx context.Context, secretId uuid.UUID, name string) (err error)
 type PublicApiDeleteChef func(ctx context.Context, secretId uuid.UUID) (err error)
+type PublicApiGetChef func(ctx context.Context, secretId uuid.UUID) (name string, err error)
 type PublicApiUpdateDish func(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error)
 type PublicApiGetAllDish func(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error)
 type PublicApiGetFavoriteDish func(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error)
@@ -28,6 +29,7 @@ type MiddlewarePublicApiMarkUnFavoriteDish func(next PublicApiMarkUnFavoriteDish
 type MiddlewarePublicApiDeleteDish func(next PublicApiDeleteDish) PublicApiDeleteDish
 type MiddlewarePublicApiCreateChef func(next PublicApiCreateChef) PublicApiCreateChef
 type MiddlewarePublicApiDeleteChef func(next PublicApiDeleteChef) PublicApiDeleteChef
+type MiddlewarePublicApiGetChef func(next PublicApiGetChef) PublicApiGetChef
 type MiddlewarePublicApiUpdateDish func(next PublicApiUpdateDish) PublicApiUpdateDish
 type MiddlewarePublicApiGetAllDish func(next PublicApiGetAllDish) PublicApiGetAllDish
 type MiddlewarePublicApiGetFavoriteDish func(next PublicApiGetFavoriteDish) PublicApiGetFavoriteDish

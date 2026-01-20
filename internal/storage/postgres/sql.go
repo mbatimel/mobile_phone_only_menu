@@ -42,6 +42,9 @@ var sqlDeleteAll string
 //go:embed sql/delete_chef.sql
 var sqlDeleteChef string
 
+//go:embed sql/select_chef.sql
+var sqlSelectChef string
+
 func insertDish(ctx context.Context, conn pgx.Tx, dish string, categoty string) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, defaultTimeout)
 	defer cancel()
@@ -162,6 +165,21 @@ func selectAllDish(ctx context.Context, conn pgx.Tx) ([]consts.MenuDish, error) 
 		result = append(result, res)
 	}
 	return result, nil
+}
+func selectChef(ctx context.Context, conn pgx.Tx) (string, error) {
+	internalCtx, cancel := context.WithTimeout(ctx, defaultTimeout)
+	defer cancel()
+
+	var name string
+	err := conn.QueryRow(internalCtx, sqlSelectChef).Scan(&name)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return name, nil
+		}
+		return name, fmt.Errorf("postgresql: %w", err)
+	}
+
+	return name, nil
 }
 
 func selectFavoriteDish(ctx context.Context, conn pgx.Tx) ([]consts.MenuDish, error) {

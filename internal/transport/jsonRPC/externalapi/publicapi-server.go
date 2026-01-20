@@ -17,6 +17,7 @@ type serverPublicApi struct {
 	deleteDish         PublicApiDeleteDish
 	createChef         PublicApiCreateChef
 	deleteChef         PublicApiDeleteChef
+	getChef            PublicApiGetChef
 	updateDish         PublicApiUpdateDish
 	getAllDish         PublicApiGetAllDish
 	getFavoriteDish    PublicApiGetFavoriteDish
@@ -31,6 +32,7 @@ type MiddlewareSetPublicApi interface {
 	WrapDeleteDish(m MiddlewarePublicApiDeleteDish)
 	WrapCreateChef(m MiddlewarePublicApiCreateChef)
 	WrapDeleteChef(m MiddlewarePublicApiDeleteChef)
+	WrapGetChef(m MiddlewarePublicApiGetChef)
 	WrapUpdateDish(m MiddlewarePublicApiUpdateDish)
 	WrapGetAllDish(m MiddlewarePublicApiGetAllDish)
 	WrapGetFavoriteDish(m MiddlewarePublicApiGetFavoriteDish)
@@ -48,6 +50,7 @@ func newServerPublicApi(svc publicapi.PublicApi) *serverPublicApi {
 		deleteChef:         svc.DeleteChef,
 		deleteDish:         svc.DeleteDish,
 		getAllDish:         svc.GetAllDish,
+		getChef:            svc.GetChef,
 		getFavoriteDish:    svc.GetFavoriteDish,
 		markFavoriteDish:   svc.MarkFavoriteDish,
 		markUnFavoriteDish: svc.MarkUnFavoriteDish,
@@ -64,6 +67,7 @@ func (srv *serverPublicApi) Wrap(m MiddlewarePublicApi) {
 	srv.deleteDish = srv.svc.DeleteDish
 	srv.createChef = srv.svc.CreateChef
 	srv.deleteChef = srv.svc.DeleteChef
+	srv.getChef = srv.svc.GetChef
 	srv.updateDish = srv.svc.UpdateDish
 	srv.getAllDish = srv.svc.GetAllDish
 	srv.getFavoriteDish = srv.svc.GetFavoriteDish
@@ -92,6 +96,10 @@ func (srv *serverPublicApi) CreateChef(ctx context.Context, secretId uuid.UUID, 
 
 func (srv *serverPublicApi) DeleteChef(ctx context.Context, secretId uuid.UUID) (err error) {
 	return srv.deleteChef(ctx, secretId)
+}
+
+func (srv *serverPublicApi) GetChef(ctx context.Context, secretId uuid.UUID) (name string, err error) {
+	return srv.getChef(ctx, secretId)
 }
 
 func (srv *serverPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error) {
@@ -132,6 +140,10 @@ func (srv *serverPublicApi) WrapCreateChef(m MiddlewarePublicApiCreateChef) {
 
 func (srv *serverPublicApi) WrapDeleteChef(m MiddlewarePublicApiDeleteChef) {
 	srv.deleteChef = m(srv.deleteChef)
+}
+
+func (srv *serverPublicApi) WrapGetChef(m MiddlewarePublicApiGetChef) {
+	srv.getChef = m(srv.getChef)
 }
 
 func (srv *serverPublicApi) WrapUpdateDish(m MiddlewarePublicApiUpdateDish) {

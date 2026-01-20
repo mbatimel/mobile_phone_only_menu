@@ -24,6 +24,7 @@ type Storage interface {
 	UpdateDish(ctx context.Context, id uint64, text string) (err error)
 
 	GetAllDish(ctx context.Context) (resp []models.MenuDish, err error)
+	GetChef(ctx context.Context) (resp string, err error)
 
 	GetFavoriteDish(ctx context.Context) (resp []models.MenuDish, err error)
 
@@ -133,6 +134,18 @@ func (s *storage) GetAllDish(ctx context.Context) (resp []models.MenuDish, err e
 		_ = tx.Rollback(ctx)
 	}()
 	return selectAllDish(ctx, tx)
+}
+func (s *storage) GetChef(ctx context.Context) (resp string, err error) {
+	masterConn := s.connectManager.GetConnection(REPLICA)
+
+	tx, err := masterConn.Begin(ctx)
+	if err != nil {
+		return "", fmt.Errorf("tx.Begin error: %w", err)
+	}
+	defer func() {
+		_ = tx.Rollback(ctx)
+	}()
+	return selectChef(ctx, tx)
 }
 
 func (s *storage) GetFavoriteDish(ctx context.Context) (resp []models.MenuDish, err error) {

@@ -51,6 +51,29 @@ paths:
                 "500":
                     description: Internal Server Error
     /menu/api/chef:
+        get:
+            tags:
+                - PublicApi
+            summary: удалсть шефа
+            description: удалить шефа
+            parameters:
+                - in: cookie
+                  name: x-secret-id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "403":
+                    description: Forbidden
+                "405":
+                    description: Method Not Allowed
+                "500":
+                    description: Internal Server Error
         delete:
             tags:
                 - PublicApi
@@ -328,6 +351,8 @@ components:
             description: удалить позицию в меню
         requestPublicApiGetAllDish:
             type: object
+        requestPublicApiGetChef:
+            type: object
         requestPublicApiGetFavoriteDish:
             type: object
         requestPublicApiMarkFavoriteDish:
@@ -381,6 +406,11 @@ components:
                 - {}
                 - type: object
                   description: получить полный список позиций меню
+        responsePublicApiGetChef:
+            allOf:
+                - {}
+                - type: object
+                  description: удалить шефа
         responsePublicApiGetFavoriteDish:
             allOf:
                 - {}

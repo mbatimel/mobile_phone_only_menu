@@ -166,6 +166,28 @@ func (http *httpPublicApi) serveDeleteChef(ctx *fiber.Ctx) (err error) {
 
 	return customhandlers.DeleteChef(ctx, http.svc, request.SecretId)
 }
+func (http *httpPublicApi) getChef(ctx context.Context, request requestPublicApiGetChef) (response responsePublicApiGetChef, err error) {
+
+	response.Name, err = http.svc.GetChef(ctx, request.SecretId)
+	if err != nil {
+		if http.errorHandler != nil {
+			err = http.errorHandler(err)
+		}
+	}
+	return
+}
+func (http *httpPublicApi) serveGetChef(ctx *fiber.Ctx) (err error) {
+
+	var request requestPublicApiGetChef
+
+	if _secretId := ctx.Cookies("x-secret-id"); _secretId != "" {
+		var secretId uuid.UUID
+		secretId, _ = uuid.Parse(_secretId)
+		request.SecretId = secretId
+	}
+
+	return customhandlers.GetChef(ctx, http.svc, request.SecretId)
+}
 func (http *httpPublicApi) updateDish(ctx context.Context, request requestPublicApiUpdateDish) (response responsePublicApiUpdateDish, err error) {
 
 	err = http.svc.UpdateDish(ctx, request.SecretId, request.Id, request.Text)

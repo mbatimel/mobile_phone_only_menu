@@ -49,6 +49,7 @@ func (http *httpPublicApi) SetRoutes(route *fiber.App) {
 	route.Delete("/menu/api/delete", http.serveDeleteDish)
 	route.Post("/menu/api/create/chef", http.serveCreateChef)
 	route.Delete("/menu/api/chef", http.serveDeleteChef)
+	route.Get("/menu/api/chef", http.serveGetChef)
 	route.Put("/menu/api/update", http.serveUpdateDish)
 	route.Get("/menu/api/all", http.serveGetAllDish)
 	route.Get("/menu/api/favorite", http.serveGetFavoriteDish)

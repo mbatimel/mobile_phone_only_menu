@@ -162,6 +162,41 @@ func DeleteDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, id 
 	sendResponse(ctx, log.Logger, nil, nil)
 	return err
 }
+func GetChef(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID) error {
+	var (
+		methodName = "GetChef"
+		err        error
+	)
+
+	defer func(begin time.Time) {
+		fields := map[string]interface{}{
+			"method":      "get",
+			"path":        "/menu/api/chef",
+			"handlerName": methodName,
+			"service": MenuDishServiceName,
+			"took":    time.Since(begin).String(),
+		}
+		l := log.Info()
+		if err != nil {
+			if errors.Is(err, errors.ForbiddenError()) {
+				l = log.Warn().Err(err)
+			} else {
+				l = log.Error().Err(err)
+			}
+		}
+		l.Fields(fields).Msg("call")
+
+	}(time.Now())
+
+	response, err := svc.GetChef(ctx.UserContext(), secretId)
+	if err != nil {
+		sendResponse(ctx, log.Logger, response, err)
+		return nil
+	}
+
+	sendResponse(ctx, log.Logger, response, nil)
+	return err
+}
 
 func CreateChef(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, name string) error {
 	var (
