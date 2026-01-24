@@ -74,8 +74,8 @@ func (srv *serverPublicApi) Wrap(m MiddlewarePublicApi) {
 	srv.deleteAllMenu = srv.svc.DeleteAllMenu
 }
 
-func (srv *serverPublicApi) CreateDish(ctx context.Context, secretId uuid.UUID, dish string, categoty string) (err error) {
-	return srv.createDish(ctx, secretId, dish, categoty)
+func (srv *serverPublicApi) CreateDish(ctx context.Context, secretId uuid.UUID, dish string, category string) (err error) {
+	return srv.createDish(ctx, secretId, dish, category)
 }
 
 func (srv *serverPublicApi) MarkFavoriteDish(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error) {
@@ -102,8 +102,8 @@ func (srv *serverPublicApi) GetChef(ctx context.Context, secretId uuid.UUID) (na
 	return srv.getChef(ctx, secretId)
 }
 
-func (srv *serverPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error) {
-	return srv.updateDish(ctx, secretId, id, text)
+func (srv *serverPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string, category string) (err error) {
+	return srv.updateDish(ctx, secretId, id, text, category)
 }
 
 func (srv *serverPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {

@@ -31,7 +31,7 @@ type PublicApi interface {
 	// @tg 400=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err400
 	// @tg 403=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err403
 	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
-	CreateDish(ctx context.Context, secretId uuid.UUID, dish string, categoty string) (err error)
+	CreateDish(ctx context.Context, secretId uuid.UUID, dish string, category string) (err error)
 
 	// MarkFavoriteDish
 	// @tg http-method=POST
@@ -114,7 +114,7 @@ type PublicApi interface {
 	// @tg 400=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err400
 	// @tg 403=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err403
 	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
-	GetChef(ctx context.Context, secretId uuid.UUID) (name string,err error)
+	GetChef(ctx context.Context, secretId uuid.UUID) (name string, err error)
 
 	// UpdateDish
 	// @tg http-method=PUT
@@ -128,7 +128,7 @@ type PublicApi interface {
 	// @tg 400=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err400
 	// @tg 403=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err403
 	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
-	UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error)
+	UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string, category string) (err error)
 
 	// GetAllDish
 	// @tg http-method=GET

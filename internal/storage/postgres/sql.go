@@ -45,14 +45,14 @@ var sqlDeleteChef string
 //go:embed sql/select_chef.sql
 var sqlSelectChef string
 
-func insertDish(ctx context.Context, conn pgx.Tx, dish string, categoty string) (err error) {
+func insertDish(ctx context.Context, conn pgx.Tx, dish string, category string) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, defaultTimeout)
 	defer cancel()
 	_, err = conn.Exec(
 		ctx,
 		sqlInsertMenu,
 		dish,
-		categoty,
+		category,
 	)
 	if err != nil {
 		return fmt.Errorf("postgresql: %w", err)
@@ -127,11 +127,11 @@ func insertChef(ctx context.Context, conn pgx.Tx, name string) (err error) {
 	return nil
 }
 
-func updateDish(ctx context.Context, conn pgx.Tx, id uint64, text string) (err error) {
+func updateDish(ctx context.Context, conn pgx.Tx, id uint64, text string, category string) (err error) {
 	nCtx, cancel := context.WithTimeout(ctx, defaultTimeout)
 	defer cancel()
 
-	_, err = conn.Exec(nCtx, sqlUpdateDish, text, id)
+	_, err = conn.Exec(nCtx, sqlUpdateDish, text, category, id)
 	if err != nil {
 		return fmt.Errorf("postgresql: %w", err)
 	}

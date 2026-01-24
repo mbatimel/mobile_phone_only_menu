@@ -12,7 +12,7 @@ import (
 
 //go:generate mockgen -source=interface.go -destination storage_mock.go -package postgres
 type Storage interface {
-	CreateDish(ctx context.Context, dish string, categoty string) (err error)
+	CreateDish(ctx context.Context, dish string, category string) (err error)
 
 	MarkFavoriteDish(ctx context.Context, ids []uint64) (err error)
 	MarkUnFavoriteDish(ctx context.Context, ids []uint64) (err error)
@@ -21,7 +21,7 @@ type Storage interface {
 
 	CreateChef(ctx context.Context, name string) (err error)
 
-	UpdateDish(ctx context.Context, id uint64, text string) (err error)
+	UpdateDish(ctx context.Context, id uint64, text string, category string) (err error)
 
 	GetAllDish(ctx context.Context) (resp []models.MenuDish, err error)
 	GetChef(ctx context.Context) (resp string, err error)
@@ -45,7 +45,7 @@ func New(cfg config.Postgres, logger zerolog.Logger) (Storage, error) {
 		connectManager: connectManager,
 	}, nil
 }
-func (s *storage) CreateDish(ctx context.Context, dish string, categoty string) (err error) {
+func (s *storage) CreateDish(ctx context.Context, dish string, category string) (err error) {
 	masterConn := s.connectManager.GetConnection(MASTER)
 
 	tx, err := masterConn.Begin(ctx)
@@ -56,7 +56,7 @@ func (s *storage) CreateDish(ctx context.Context, dish string, categoty string) 
 		_ = tx.Rollback(ctx)
 	}()
 
-	return insertDish(ctx, tx, dish, categoty)
+	return insertDish(ctx, tx, dish, category)
 }
 
 func (s *storage) MarkFavoriteDish(ctx context.Context, ids []uint64) (err error) {
@@ -110,7 +110,7 @@ func (s *storage) CreateChef(ctx context.Context, name string) (err error) {
 	return insertChef(ctx, tx, name)
 }
 
-func (s *storage) UpdateDish(ctx context.Context, id uint64, text string) (err error) {
+func (s *storage) UpdateDish(ctx context.Context, id uint64, text string, category string) (err error) {
 	masterConn := s.connectManager.GetConnection(MASTER)
 
 	tx, err := masterConn.Begin(ctx)
@@ -120,7 +120,7 @@ func (s *storage) UpdateDish(ctx context.Context, id uint64, text string) (err e
 	defer func() {
 		_ = tx.Rollback(ctx)
 	}()
-	return updateDish(ctx, tx, id, text)
+	return updateDish(ctx, tx, id, text, category)
 }
 
 func (s *storage) GetAllDish(ctx context.Context) (resp []models.MenuDish, err error) {

@@ -23,14 +23,14 @@ func loggerMiddlewarePublicApi() MiddlewarePublicApi {
 	}
 }
 
-func (m loggerPublicApi) CreateDish(ctx context.Context, secretId uuid.UUID, dish string, categoty string) (err error) {
+func (m loggerPublicApi) CreateDish(ctx context.Context, secretId uuid.UUID, dish string, category string) (err error) {
 	logger := log.Ctx(ctx).With().Str("service", "PublicApi").Str("method", "createDish").Logger()
 	defer func(_begin time.Time) {
 		logHandle := func(ev *zerolog.Event) {
 			fields := map[string]interface{}{
 				"method": "publicApi.createDish",
 				"request": viewer.Sprintf("%+v", requestPublicApiCreateDish{
-					Categoty: categoty,
+					Category: category,
 					Dish:     dish,
 					SecretId: secretId,
 				}),
@@ -44,7 +44,7 @@ func (m loggerPublicApi) CreateDish(ctx context.Context, secretId uuid.UUID, dis
 		}
 		logger.Info().Func(logHandle).Msg("call createDish")
 	}(time.Now())
-	return m.next.CreateDish(ctx, secretId, dish, categoty)
+	return m.next.CreateDish(ctx, secretId, dish, category)
 }
 
 func (m loggerPublicApi) MarkFavoriteDish(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error) {
@@ -179,13 +179,14 @@ func (m loggerPublicApi) GetChef(ctx context.Context, secretId uuid.UUID) (name 
 	return m.next.GetChef(ctx, secretId)
 }
 
-func (m loggerPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error) {
+func (m loggerPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string, category string) (err error) {
 	logger := log.Ctx(ctx).With().Str("service", "PublicApi").Str("method", "updateDish").Logger()
 	defer func(_begin time.Time) {
 		logHandle := func(ev *zerolog.Event) {
 			fields := map[string]interface{}{
 				"method": "publicApi.updateDish",
 				"request": viewer.Sprintf("%+v", requestPublicApiUpdateDish{
+					Category: category,
 					Id:       id,
 					SecretId: secretId,
 					Text:     text,
@@ -200,7 +201,7 @@ func (m loggerPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id 
 		}
 		logger.Info().Func(logHandle).Msg("call updateDish")
 	}(time.Now())
-	return m.next.UpdateDish(ctx, secretId, id, text)
+	return m.next.UpdateDish(ctx, secretId, id, text, category)
 }
 
 func (m loggerPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {

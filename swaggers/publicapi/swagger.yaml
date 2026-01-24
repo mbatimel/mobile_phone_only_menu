@@ -329,9 +329,9 @@ components:
             type: object
             required:
                 - dish
-                - categoty
+                - category
             properties:
-                categoty:
+                category:
                     type: string
                 dish:
                     type: string
@@ -384,7 +384,10 @@ components:
             required:
                 - id
                 - text
+                - category
             properties:
+                category:
+                    type: string
                 id:
                     type: number
                     format: uint64

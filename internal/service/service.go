@@ -17,8 +17,8 @@ type menuDishService struct {
 	serviceID uuid.UUID
 }
 
-func (m *menuDishService) CreateDish(ctx context.Context, secretId uuid.UUID, dish string, categoty string) (err error) {
-	return m.storage.CreateDish(ctx, dish, categoty)
+func (m *menuDishService) CreateDish(ctx context.Context, secretId uuid.UUID, dish string, category string) (err error) {
+	return m.storage.CreateDish(ctx, dish, category)
 }
 
 func (m *menuDishService) MarkFavoriteDish(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error) {
@@ -38,12 +38,12 @@ func (m *menuDishService) CreateChef(ctx context.Context, secretId uuid.UUID, na
 func (m *menuDishService) DeleteChef(ctx context.Context, secretId uuid.UUID) (err error) {
 	return m.storage.DeleteChef(ctx)
 }
-func (m *menuDishService) GetChef(ctx context.Context, secretId uuid.UUID) (name string,err error){
+func (m *menuDishService) GetChef(ctx context.Context, secretId uuid.UUID) (name string, err error) {
 	return m.storage.GetChef(ctx)
 }
 
-func (m *menuDishService) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error) {
-	return m.storage.UpdateDish(ctx, id, text)
+func (m *menuDishService) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string, category string) (err error) {
+	return m.storage.UpdateDish(ctx, id, text, category)
 }
 
 func (m *menuDishService) GetAllDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {

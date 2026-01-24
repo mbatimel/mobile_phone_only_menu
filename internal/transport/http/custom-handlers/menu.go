@@ -12,7 +12,7 @@ import (
 
 const MenuDishServiceName = "Menu-Dish"
 
-func CreateDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, dish string, categoty string) error {
+func CreateDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, dish string, category string) error {
 	var (
 		methodName = "CreateDish"
 		err        error
@@ -24,7 +24,7 @@ func CreateDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, dis
 			"path":        "/menu/api/create/dish",
 			"handlerName": methodName,
 			"dish":        dish,
-			"categoty":    categoty,
+			"category":    category,
 			"service":     MenuDishServiceName,
 			"took":        time.Since(begin).String(),
 		}
@@ -40,7 +40,7 @@ func CreateDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, dis
 
 	}(time.Now())
 
-	err = svc.CreateDish(ctx.UserContext(), secretId, dish, categoty)
+	err = svc.CreateDish(ctx.UserContext(), secretId, dish, category)
 	if err != nil {
 		sendResponse(ctx, log.Logger, nil, err)
 		return nil
@@ -173,8 +173,8 @@ func GetChef(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID) error 
 			"method":      "get",
 			"path":        "/menu/api/chef",
 			"handlerName": methodName,
-			"service": MenuDishServiceName,
-			"took":    time.Since(begin).String(),
+			"service":     MenuDishServiceName,
+			"took":        time.Since(begin).String(),
 		}
 		l := log.Info()
 		if err != nil {
@@ -270,7 +270,7 @@ func DeleteChef(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID) err
 	return err
 }
 
-func UpdateDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, id uint64, text string) error {
+func UpdateDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, id uint64, text string, category string) error {
 	var (
 		methodName = "UpdateDish"
 		err        error
@@ -298,7 +298,7 @@ func UpdateDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, id 
 
 	}(time.Now())
 
-	err = svc.UpdateDish(ctx.UserContext(), secretId, id, text)
+	err = svc.UpdateDish(ctx.UserContext(), secretId, id, text, category)
 	if err != nil {
 		sendResponse(ctx, log.Logger, nil, err)
 		return nil

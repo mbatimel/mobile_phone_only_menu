@@ -20,7 +20,7 @@ func metricsMiddlewarePublicApi(next publicapi.PublicApi) publicapi.PublicApi {
 	return &metricsPublicApi{next: next}
 }
 
-func (m metricsPublicApi) CreateDish(ctx context.Context, secretId uuid.UUID, dish string, categoty string) (err error) {
+func (m metricsPublicApi) CreateDish(ctx context.Context, secretId uuid.UUID, dish string, category string) (err error) {
 
 	defer func(_begin time.Time) {
 		var (
@@ -40,7 +40,7 @@ func (m metricsPublicApi) CreateDish(ctx context.Context, secretId uuid.UUID, di
 		RequestLatency.WithLabelValues("publicApi", "createDish", strconv.FormatBool(success), strconv.Itoa(errCode)).Observe(time.Since(_begin).Seconds())
 	}(time.Now())
 
-	return m.next.CreateDish(ctx, secretId, dish, categoty)
+	return m.next.CreateDish(ctx, secretId, dish, category)
 }
 
 func (m metricsPublicApi) MarkFavoriteDish(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error) {
@@ -181,7 +181,7 @@ func (m metricsPublicApi) GetChef(ctx context.Context, secretId uuid.UUID) (name
 	return m.next.GetChef(ctx, secretId)
 }
 
-func (m metricsPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error) {
+func (m metricsPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id uint64, text string, category string) (err error) {
 
 	defer func(_begin time.Time) {
 		var (
@@ -201,7 +201,7 @@ func (m metricsPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id
 		RequestLatency.WithLabelValues("publicApi", "updateDish", strconv.FormatBool(success), strconv.Itoa(errCode)).Observe(time.Since(_begin).Seconds())
 	}(time.Now())
 
-	return m.next.UpdateDish(ctx, secretId, id, text)
+	return m.next.UpdateDish(ctx, secretId, id, text, category)
 }
 
 func (m metricsPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {

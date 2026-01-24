@@ -11,7 +11,7 @@ import (
 
 func (http *httpPublicApi) createDish(ctx context.Context, request requestPublicApiCreateDish) (response responsePublicApiCreateDish, err error) {
 
-	err = http.svc.CreateDish(ctx, request.SecretId, request.Dish, request.Categoty)
+	err = http.svc.CreateDish(ctx, request.SecretId, request.Dish, request.Category)
 	if err != nil {
 		if http.errorHandler != nil {
 			err = http.errorHandler(err)
@@ -34,7 +34,7 @@ func (http *httpPublicApi) serveCreateDish(ctx *fiber.Ctx) (err error) {
 		request.SecretId = secretId
 	}
 
-	return customhandlers.CreateDish(ctx, http.svc, request.SecretId, request.Dish, request.Categoty)
+	return customhandlers.CreateDish(ctx, http.svc, request.SecretId, request.Dish, request.Category)
 }
 func (http *httpPublicApi) markFavoriteDish(ctx context.Context, request requestPublicApiMarkFavoriteDish) (response responsePublicApiMarkFavoriteDish, err error) {
 
@@ -190,7 +190,7 @@ func (http *httpPublicApi) serveGetChef(ctx *fiber.Ctx) (err error) {
 }
 func (http *httpPublicApi) updateDish(ctx context.Context, request requestPublicApiUpdateDish) (response responsePublicApiUpdateDish, err error) {
 
-	err = http.svc.UpdateDish(ctx, request.SecretId, request.Id, request.Text)
+	err = http.svc.UpdateDish(ctx, request.SecretId, request.Id, request.Text, request.Category)
 	if err != nil {
 		if http.errorHandler != nil {
 			err = http.errorHandler(err)
@@ -213,7 +213,7 @@ func (http *httpPublicApi) serveUpdateDish(ctx *fiber.Ctx) (err error) {
 		request.SecretId = secretId
 	}
 
-	return customhandlers.UpdateDish(ctx, http.svc, request.SecretId, request.Id, request.Text)
+	return customhandlers.UpdateDish(ctx, http.svc, request.SecretId, request.Id, request.Text, request.Category)
 }
 func (http *httpPublicApi) getAllDish(ctx context.Context, request requestPublicApiGetAllDish) (response responsePublicApiGetAllDish, err error) {
 

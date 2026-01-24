@@ -9,7 +9,7 @@ import (
 type requestPublicApiCreateDish struct {
 	SecretId uuid.UUID `json:"secretId,omitempty"`
 	Dish     string    `json:"dish,omitempty"`
-	Categoty string    `json:"categoty,omitempty"`
+	Category string    `json:"category,omitempty"`
 }
 
 // Formal exchange type, please do not delete.
@@ -66,6 +66,7 @@ type requestPublicApiUpdateDish struct {
 	SecretId uuid.UUID `json:"secretId,omitempty"`
 	Id       uint64    `json:"id,omitempty"`
 	Text     string    `json:"text,omitempty"`
+	Category string    `json:"category,omitempty"`
 }
 
 // Formal exchange type, please do not delete.

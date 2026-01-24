@@ -9,14 +9,14 @@ import (
 	"github.com/mbatimel/mobile_phone_only_menu/pkg/interfaces/publicapi"
 )
 
-type PublicApiCreateDish func(ctx context.Context, secretId uuid.UUID, dish string, categoty string) (err error)
+type PublicApiCreateDish func(ctx context.Context, secretId uuid.UUID, dish string, category string) (err error)
 type PublicApiMarkFavoriteDish func(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error)
 type PublicApiMarkUnFavoriteDish func(ctx context.Context, secretId uuid.UUID, ids []uint64) (err error)
 type PublicApiDeleteDish func(ctx context.Context, secretId uuid.UUID, id uint64) (err error)
 type PublicApiCreateChef func(ctx context.Context, secretId uuid.UUID, name string) (err error)
 type PublicApiDeleteChef func(ctx context.Context, secretId uuid.UUID) (err error)
 type PublicApiGetChef func(ctx context.Context, secretId uuid.UUID) (name string, err error)
-type PublicApiUpdateDish func(ctx context.Context, secretId uuid.UUID, id uint64, text string) (err error)
+type PublicApiUpdateDish func(ctx context.Context, secretId uuid.UUID, id uint64, text string, category string) (err error)
 type PublicApiGetAllDish func(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error)
 type PublicApiGetFavoriteDish func(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error)
 type PublicApiDeleteAllMenu func(ctx context.Context, secretId uuid.UUID) (err error)

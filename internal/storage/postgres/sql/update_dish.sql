@@ -1,3 +1,3 @@
 UPDATE menu.dishes 
-SET name = $1 
-WHERE id = $2;
+SET name = $1 , category = $2 
+WHERE id = $3;
