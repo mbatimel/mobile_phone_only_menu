@@ -8,6 +8,11 @@ paths:
                 - PublicApi
             description: получить полный список позиций меню
             parameters:
+                - in: query
+                  name: date
+                  schema:
+                    type: string
+                    format: date-time
                 - in: cookie
                   name: x-secret-id
                   required: true
@@ -191,6 +196,11 @@ paths:
             summary: Получить сприсок желаймого
             description: Получить сприсок желаймого
             parameters:
+                - in: query
+                  name: date
+                  schema:
+                    type: string
+                    format: date-time
                 - in: cookie
                   name: x-secret-id
                   required: true

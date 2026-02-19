@@ -3,6 +3,7 @@ package externalapi
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/mbatimel/mobile_phone_only_menu/internal/consts"
@@ -17,8 +18,8 @@ type PublicApiCreateChef func(ctx context.Context, secretId uuid.UUID, name stri
 type PublicApiDeleteChef func(ctx context.Context, secretId uuid.UUID) (err error)
 type PublicApiGetChef func(ctx context.Context, secretId uuid.UUID) (name string, err error)
 type PublicApiUpdateDish func(ctx context.Context, secretId uuid.UUID, id uint64, text string, category string) (err error)
-type PublicApiGetAllDish func(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error)
-type PublicApiGetFavoriteDish func(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error)
+type PublicApiGetAllDish func(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error)
+type PublicApiGetFavoriteDish func(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error)
 type PublicApiDeleteAllMenu func(ctx context.Context, secretId uuid.UUID) (err error)
 
 type MiddlewarePublicApi func(next publicapi.PublicApi) publicapi.PublicApi

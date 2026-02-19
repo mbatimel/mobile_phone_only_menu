@@ -2,6 +2,8 @@
 package externalapi
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/mbatimel/mobile_phone_only_menu/internal/consts"
 )
@@ -74,6 +76,7 @@ type responsePublicApiUpdateDish struct{}
 
 type requestPublicApiGetAllDish struct {
 	SecretId uuid.UUID `json:"secretId,omitempty"`
+	Date     time.Time `json:"date,omitempty"`
 }
 
 type responsePublicApiGetAllDish struct {
@@ -82,6 +85,7 @@ type responsePublicApiGetAllDish struct {
 
 type requestPublicApiGetFavoriteDish struct {
 	SecretId uuid.UUID `json:"secretId,omitempty"`
+	Date     time.Time `json:"date,omitempty"`
 }
 
 type responsePublicApiGetFavoriteDish struct {

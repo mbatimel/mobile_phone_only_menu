@@ -3,6 +3,7 @@ package externalapi
 
 import (
 	"context"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	uuid "github.com/google/uuid"
@@ -217,7 +218,7 @@ func (http *httpPublicApi) serveUpdateDish(ctx *fiber.Ctx) (err error) {
 }
 func (http *httpPublicApi) getAllDish(ctx context.Context, request requestPublicApiGetAllDish) (response responsePublicApiGetAllDish, err error) {
 
-	response.Resp, err = http.svc.GetAllDish(ctx, request.SecretId)
+	response.Resp, err = http.svc.GetAllDish(ctx, request.SecretId, request.Date)
 	if err != nil {
 		if http.errorHandler != nil {
 			err = http.errorHandler(err)
@@ -229,17 +230,27 @@ func (http *httpPublicApi) serveGetAllDish(ctx *fiber.Ctx) (err error) {
 
 	var request requestPublicApiGetAllDish
 
+	if _date := ctx.Query("date"); _date != "" {
+		var date time.Time
+		date, err = time.Parse(time.RFC3339Nano, _date)
+		if err != nil {
+			ctx.Status(fiber.StatusBadRequest)
+			return sendResponse(ctx, "url arguments could not be decoded: "+err.Error())
+		}
+		request.Date = date
+	}
+
 	if _secretId := ctx.Cookies("x-secret-id"); _secretId != "" {
 		var secretId uuid.UUID
 		secretId, _ = uuid.Parse(_secretId)
 		request.SecretId = secretId
 	}
 
-	return customhandlers.GetAllDish(ctx, http.svc, request.SecretId)
+	return customhandlers.GetAllDish(ctx, http.svc, request.SecretId, request.Date)
 }
 func (http *httpPublicApi) getFavoriteDish(ctx context.Context, request requestPublicApiGetFavoriteDish) (response responsePublicApiGetFavoriteDish, err error) {
 
-	response.Resp, err = http.svc.GetFavoriteDish(ctx, request.SecretId)
+	response.Resp, err = http.svc.GetFavoriteDish(ctx, request.SecretId, request.Date)
 	if err != nil {
 		if http.errorHandler != nil {
 			err = http.errorHandler(err)
@@ -251,13 +262,23 @@ func (http *httpPublicApi) serveGetFavoriteDish(ctx *fiber.Ctx) (err error) {
 
 	var request requestPublicApiGetFavoriteDish
 
+	if _date := ctx.Query("date"); _date != "" {
+		var date time.Time
+		date, err = time.Parse(time.RFC3339Nano, _date)
+		if err != nil {
+			ctx.Status(fiber.StatusBadRequest)
+			return sendResponse(ctx, "url arguments could not be decoded: "+err.Error())
+		}
+		request.Date = date
+	}
+
 	if _secretId := ctx.Cookies("x-secret-id"); _secretId != "" {
 		var secretId uuid.UUID
 		secretId, _ = uuid.Parse(_secretId)
 		request.SecretId = secretId
 	}
 
-	return customhandlers.GetFavoriteDish(ctx, http.svc, request.SecretId)
+	return customhandlers.GetFavoriteDish(ctx, http.svc, request.SecretId, request.Date)
 }
 func (http *httpPublicApi) deleteAllMenu(ctx context.Context, request requestPublicApiDeleteAllMenu) (response responsePublicApiDeleteAllMenu, err error) {
 

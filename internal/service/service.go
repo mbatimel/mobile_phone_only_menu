@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/mbatimel/mobile_phone_only_menu/internal/consts"
@@ -46,12 +47,12 @@ func (m *menuDishService) UpdateDish(ctx context.Context, secretId uuid.UUID, id
 	return m.storage.UpdateDish(ctx, id, text, category)
 }
 
-func (m *menuDishService) GetAllDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {
-	return m.storage.GetAllDish(ctx)
+func (m *menuDishService) GetAllDish(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error) {
+	return m.storage.GetAllDish(ctx, date)
 }
 
-func (m *menuDishService) GetFavoriteDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {
-	return m.storage.GetFavoriteDish(ctx)
+func (m *menuDishService) GetFavoriteDish(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error) {
+	return m.storage.GetFavoriteDish(ctx, date)
 }
 
 func (m *menuDishService) DeleteAllMenu(ctx context.Context, secretId uuid.UUID) (err error) {

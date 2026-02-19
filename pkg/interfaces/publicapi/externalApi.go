@@ -10,6 +10,7 @@ package publicapi
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/mbatimel/mobile_phone_only_menu/internal/consts"
@@ -134,6 +135,7 @@ type PublicApi interface {
 	// @tg http-method=GET
 	// @tg http-path=/all
 	// @tg http-cookies=secretId|x-secret-id
+	// @tg http-args=date|date
 	// @tg http-response=github.com/mbatimel/mobile_phone_only_menu/internal/transport/http/custom-handlers:GetAllDish
 	// @tg summary=`получить полный список позиций меню
 	// @tg desc=`получить полный список позиций меню`
@@ -142,12 +144,13 @@ type PublicApi interface {
 	// @tg 400=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err400
 	// @tg 403=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err403
 	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
-	GetAllDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error)
+	GetAllDish(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error)
 
 	// GetFavoriteDish
 	// @tg http-method=GET
 	// @tg http-path=/favorite
 	// @tg http-cookies=secretId|x-secret-id
+	// @tg http-args=date|date
 	// @tg http-response=github.com/mbatimel/mobile_phone_only_menu/internal/transport/http/custom-handlers:GetFavoriteDish
 	// @tg summary=`Получить сприсок желаймого`
 	// @tg desc=`Получить сприсок желаймого`
@@ -156,7 +159,7 @@ type PublicApi interface {
 	// @tg 400=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err400
 	// @tg 403=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err403
 	// @tg 405=github.com/mbatimel/mobile_phone_only_menu/swaggers/publicapi/models:Err405
-	GetFavoriteDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error)
+	GetFavoriteDish(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error)
 
 	// DeleteAllMenu
 	// @tg http-method=DELETE

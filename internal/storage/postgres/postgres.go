@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/mbatimel/mobile_phone_only_menu/internal/config"
 	models "github.com/mbatimel/mobile_phone_only_menu/internal/consts"
@@ -23,10 +24,10 @@ type Storage interface {
 
 	UpdateDish(ctx context.Context, id uint64, text string, category string) (err error)
 
-	GetAllDish(ctx context.Context) (resp []models.MenuDish, err error)
+	GetAllDish(ctx context.Context, date time.Time) (resp []models.MenuDish, err error)
 	GetChef(ctx context.Context) (resp string, err error)
 
-	GetFavoriteDish(ctx context.Context) (resp []models.MenuDish, err error)
+	GetFavoriteDish(ctx context.Context, date time.Time) (resp []models.MenuDish, err error)
 
 	DeleteAllMenu(ctx context.Context) (err error)
 	DeleteChef(ctx context.Context) (err error)
@@ -123,7 +124,7 @@ func (s *storage) UpdateDish(ctx context.Context, id uint64, text string, catego
 	return updateDish(ctx, tx, id, text, category)
 }
 
-func (s *storage) GetAllDish(ctx context.Context) (resp []models.MenuDish, err error) {
+func (s *storage) GetAllDish(ctx context.Context, date time.Time) (resp []models.MenuDish, err error) {
 	masterConn := s.connectManager.GetConnection(REPLICA)
 
 	tx, err := masterConn.Begin(ctx)
@@ -133,7 +134,7 @@ func (s *storage) GetAllDish(ctx context.Context) (resp []models.MenuDish, err e
 	defer func() {
 		_ = tx.Rollback(ctx)
 	}()
-	return selectAllDish(ctx, tx)
+	return selectAllDish(ctx, tx, date)
 }
 func (s *storage) GetChef(ctx context.Context) (resp string, err error) {
 	masterConn := s.connectManager.GetConnection(REPLICA)
@@ -148,7 +149,7 @@ func (s *storage) GetChef(ctx context.Context) (resp string, err error) {
 	return selectChef(ctx, tx)
 }
 
-func (s *storage) GetFavoriteDish(ctx context.Context) (resp []models.MenuDish, err error) {
+func (s *storage) GetFavoriteDish(ctx context.Context, date time.Time) (resp []models.MenuDish, err error) {
 	masterConn := s.connectManager.GetConnection(REPLICA)
 
 	tx, err := masterConn.Begin(ctx)
@@ -158,7 +159,7 @@ func (s *storage) GetFavoriteDish(ctx context.Context) (resp []models.MenuDish, 
 	defer func() {
 		_ = tx.Rollback(ctx)
 	}()
-	return selectFavoriteDish(ctx, tx)
+	return selectFavoriteDish(ctx, tx, date)
 }
 
 func (s *storage) DeleteAllMenu(ctx context.Context) (err error) {

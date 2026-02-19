@@ -3,6 +3,7 @@ package externalapi
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/mbatimel/mobile_phone_only_menu/internal/consts"
@@ -106,12 +107,12 @@ func (srv *serverPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, 
 	return srv.updateDish(ctx, secretId, id, text, category)
 }
 
-func (srv *serverPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {
-	return srv.getAllDish(ctx, secretId)
+func (srv *serverPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error) {
+	return srv.getAllDish(ctx, secretId, date)
 }
 
-func (srv *serverPublicApi) GetFavoriteDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {
-	return srv.getFavoriteDish(ctx, secretId)
+func (srv *serverPublicApi) GetFavoriteDish(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error) {
+	return srv.getFavoriteDish(ctx, secretId, date)
 }
 
 func (srv *serverPublicApi) DeleteAllMenu(ctx context.Context, secretId uuid.UUID) (err error) {

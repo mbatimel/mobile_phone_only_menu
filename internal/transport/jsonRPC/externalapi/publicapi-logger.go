@@ -204,13 +204,16 @@ func (m loggerPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id 
 	return m.next.UpdateDish(ctx, secretId, id, text, category)
 }
 
-func (m loggerPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {
+func (m loggerPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error) {
 	logger := log.Ctx(ctx).With().Str("service", "PublicApi").Str("method", "getAllDish").Logger()
 	defer func(_begin time.Time) {
 		logHandle := func(ev *zerolog.Event) {
 			fields := map[string]interface{}{
-				"method":   "publicApi.getAllDish",
-				"request":  viewer.Sprintf("%+v", requestPublicApiGetAllDish{SecretId: secretId}),
+				"method": "publicApi.getAllDish",
+				"request": viewer.Sprintf("%+v", requestPublicApiGetAllDish{
+					Date:     date,
+					SecretId: secretId,
+				}),
 				"response": viewer.Sprintf("%+v", responsePublicApiGetAllDish{Resp: resp}),
 			}
 			ev.Fields(fields).Str("took", time.Since(_begin).String())
@@ -221,16 +224,19 @@ func (m loggerPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID) (re
 		}
 		logger.Info().Func(logHandle).Msg("call getAllDish")
 	}(time.Now())
-	return m.next.GetAllDish(ctx, secretId)
+	return m.next.GetAllDish(ctx, secretId, date)
 }
 
-func (m loggerPublicApi) GetFavoriteDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {
+func (m loggerPublicApi) GetFavoriteDish(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error) {
 	logger := log.Ctx(ctx).With().Str("service", "PublicApi").Str("method", "getFavoriteDish").Logger()
 	defer func(_begin time.Time) {
 		logHandle := func(ev *zerolog.Event) {
 			fields := map[string]interface{}{
-				"method":   "publicApi.getFavoriteDish",
-				"request":  viewer.Sprintf("%+v", requestPublicApiGetFavoriteDish{SecretId: secretId}),
+				"method": "publicApi.getFavoriteDish",
+				"request": viewer.Sprintf("%+v", requestPublicApiGetFavoriteDish{
+					Date:     date,
+					SecretId: secretId,
+				}),
 				"response": viewer.Sprintf("%+v", responsePublicApiGetFavoriteDish{Resp: resp}),
 			}
 			ev.Fields(fields).Str("took", time.Since(_begin).String())
@@ -241,7 +247,7 @@ func (m loggerPublicApi) GetFavoriteDish(ctx context.Context, secretId uuid.UUID
 		}
 		logger.Info().Func(logHandle).Msg("call getFavoriteDish")
 	}(time.Now())
-	return m.next.GetFavoriteDish(ctx, secretId)
+	return m.next.GetFavoriteDish(ctx, secretId, date)
 }
 
 func (m loggerPublicApi) DeleteAllMenu(ctx context.Context, secretId uuid.UUID) (err error) {

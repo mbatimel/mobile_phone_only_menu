@@ -1,3 +1,4 @@
 SELECT id, name, category, favorite 
 FROM menu.dishes 
-ORDER BY id; -- или другой порядок
+WHERE create_at::date = $1::date
+ORDER BY id; 

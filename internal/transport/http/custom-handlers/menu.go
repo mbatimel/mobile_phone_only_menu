@@ -308,7 +308,7 @@ func UpdateDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, id 
 	return err
 }
 
-func GetAllDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID) error {
+func GetAllDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, date time.Time) error {
 	var (
 		methodName = "GetAllDish"
 		err        error
@@ -334,7 +334,7 @@ func GetAllDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID) err
 
 	}(time.Now())
 
-	response, err := svc.GetAllDish(ctx.UserContext(), secretId)
+	response, err := svc.GetAllDish(ctx.UserContext(), secretId, date)
 	if err != nil {
 		sendResponse(ctx, log.Logger, response, err)
 		return nil
@@ -343,7 +343,7 @@ func GetAllDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID) err
 	sendResponse(ctx, log.Logger, response, nil)
 	return err
 }
-func GetFavoriteDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID) error {
+func GetFavoriteDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID, date time.Time) error {
 	var (
 		methodName = "GetFavoriteDish"
 		err        error
@@ -369,7 +369,7 @@ func GetFavoriteDish(ctx *fiber.Ctx, svc publicapi.PublicApi, secretId uuid.UUID
 
 	}(time.Now())
 
-	response, err := svc.GetFavoriteDish(ctx.UserContext(), secretId)
+	response, err := svc.GetFavoriteDish(ctx.UserContext(), secretId, date)
 	if err != nil {
 		sendResponse(ctx, log.Logger, response, err)
 		return nil

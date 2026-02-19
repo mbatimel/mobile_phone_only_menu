@@ -204,7 +204,7 @@ func (m metricsPublicApi) UpdateDish(ctx context.Context, secretId uuid.UUID, id
 	return m.next.UpdateDish(ctx, secretId, id, text, category)
 }
 
-func (m metricsPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {
+func (m metricsPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error) {
 
 	defer func(_begin time.Time) {
 		var (
@@ -224,10 +224,10 @@ func (m metricsPublicApi) GetAllDish(ctx context.Context, secretId uuid.UUID) (r
 		RequestLatency.WithLabelValues("publicApi", "getAllDish", strconv.FormatBool(success), strconv.Itoa(errCode)).Observe(time.Since(_begin).Seconds())
 	}(time.Now())
 
-	return m.next.GetAllDish(ctx, secretId)
+	return m.next.GetAllDish(ctx, secretId, date)
 }
 
-func (m metricsPublicApi) GetFavoriteDish(ctx context.Context, secretId uuid.UUID) (resp []consts.MenuDish, err error) {
+func (m metricsPublicApi) GetFavoriteDish(ctx context.Context, secretId uuid.UUID, date time.Time) (resp []consts.MenuDish, err error) {
 
 	defer func(_begin time.Time) {
 		var (
@@ -247,7 +247,7 @@ func (m metricsPublicApi) GetFavoriteDish(ctx context.Context, secretId uuid.UUI
 		RequestLatency.WithLabelValues("publicApi", "getFavoriteDish", strconv.FormatBool(success), strconv.Itoa(errCode)).Observe(time.Since(_begin).Seconds())
 	}(time.Now())
 
-	return m.next.GetFavoriteDish(ctx, secretId)
+	return m.next.GetFavoriteDish(ctx, secretId, date)
 }
 
 func (m metricsPublicApi) DeleteAllMenu(ctx context.Context, secretId uuid.UUID) (err error) {

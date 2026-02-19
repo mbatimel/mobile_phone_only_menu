@@ -142,11 +142,11 @@ func updateDish(ctx context.Context, conn pgx.Tx, id uint64, text string, catego
 	return nil
 }
 
-func selectAllDish(ctx context.Context, conn pgx.Tx) ([]consts.MenuDish, error) {
+func selectAllDish(ctx context.Context, conn pgx.Tx, date time.Time) ([]consts.MenuDish, error) {
 	internalCtx, cancel := context.WithTimeout(ctx, defaultTimeout)
 	defer cancel()
 
-	rows, err := conn.Query(internalCtx, sqlSelectAllDish)
+	rows, err := conn.Query(internalCtx, sqlSelectAllDish, date)
 	if err != nil {
 		return nil, fmt.Errorf("could not query: %w", err)
 	}
@@ -182,11 +182,11 @@ func selectChef(ctx context.Context, conn pgx.Tx) (string, error) {
 	return name, nil
 }
 
-func selectFavoriteDish(ctx context.Context, conn pgx.Tx) ([]consts.MenuDish, error) {
+func selectFavoriteDish(ctx context.Context, conn pgx.Tx, date time.Time) ([]consts.MenuDish, error) {
 	internalCtx, cancel := context.WithTimeout(ctx, defaultTimeout)
 	defer cancel()
 
-	rows, err := conn.Query(internalCtx, sqlSelectFavoriteDish)
+	rows, err := conn.Query(internalCtx, sqlSelectFavoriteDish, date)
 	if err != nil {
 		return nil, fmt.Errorf("could not query: %w", err)
 	}
